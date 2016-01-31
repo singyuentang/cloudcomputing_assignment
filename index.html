@@ -49,7 +49,7 @@
 	var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
 	window.alert("load");
 	$scope.loginGoogle = function(){
-		ref.authWithOAuthRedirect("google", function (error, authData){
+		ref.authWithOAuthPopup("google", function (error, authData){
 			window.alert(authData);
 			if(error){
 				
