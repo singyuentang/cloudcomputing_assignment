@@ -48,7 +48,7 @@
 	// Here is where you update your Firebase URL. 
 	var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
 	$scope.loginGoogle = function(){
-		ref.authWithOAuthRedirect("google", function (error, authData){
+		ref.authWithOAuthPopup("google", function (error, authData){
 			window.alert(authData.uid);
 			if(error){
 				
@@ -60,19 +60,18 @@
 		});
 	};
 	
-	/*
-	ref.onAuth(authenticationCallBack);
-	window.alert("load");
 	
-	function authenticationCallBack(authData){
-		window.alert(authData.uid);
+	
+	ref.onAuth(authenticationCallBack);
 		
+	function authenticationCallBack(authData){
 		if (authData.uid !== null) {
 			$scope.myName = authData.uid;
 			$scope.myProvider = authData.provider;
 		}
 	}
-	*/
+	
+	
 	
     
     	
