@@ -50,6 +50,7 @@
 	window.alert("load");
 	$scope.loginGoogle = function(){
 		ref.authWithOAuthRedirect("google", function (error, authData){
+			window.alert(authData);
 			if(error){
 				
 				console.log("Login Failed", error);
