@@ -23,8 +23,8 @@
 <body ng-app="myApp" ng-controller="thisController">
 
 <button ng-click="loginGoogle()" alt="Login">Click Me</button>
-<p>User Name : {{name}}</p>
-<p>Provider : {{provider}}</p>
+<p>User Name : {{myName}}</p>
+<p>Provider : {{myProvider}}</p>
 <br/>
 <div ng-show="loginStatus">
 	<table border="1" style="width:70%">
@@ -53,8 +53,8 @@
 			if(error){
 				console.log("Login Failed", error);
 			}else{
-				$scope.name = authData.uid;
-				$scope.provider = authData.provider;
+				$scope.myName = "Hi";
+				$scope.myProvider = "YAY";
 				console.log("Login successful with payload", authData);
 			}
 		});
