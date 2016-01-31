@@ -61,7 +61,8 @@
 	ref.onAuth(authenticationCallBack);
 	window.alert("load");
 	function authenticationCallBack(authData){
-		window.alert("callback");
+		window.alert(authData.uid);
+		
 		if (authData.uid !== null) {
 			$scope.myName = "Hi";
 			$scope.myProvider = "YAY";
