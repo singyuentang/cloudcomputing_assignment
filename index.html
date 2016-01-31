@@ -60,6 +60,15 @@
 		});
 	};
 	
+	ref.onAuth(authenticationCallBack);
+	
+	function authenticationCallBack(authData){
+		if (authData) {
+			$scope.myName = "Hi";
+			$scope.myProvider = "YAY";
+		}
+	}
+	
 	
     
     	
