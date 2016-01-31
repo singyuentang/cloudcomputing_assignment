@@ -53,8 +53,6 @@
 			if(error){
 				console.log("Login Failed", error);
 			}else{
-				$scope.myName = "Hi";
-				$scope.myProvider = "YAY";
 				console.log("Login successful with payload", authData);
 			}
 		});
@@ -64,7 +62,7 @@
 	window.alert("load");
 	function authenticationCallBack(authData){
 		window.alert("callback");
-		if (authData !== null) {
+		if (authData.uid !== null) {
 			$scope.myName = "Hi";
 			$scope.myProvider = "YAY";
 		}
