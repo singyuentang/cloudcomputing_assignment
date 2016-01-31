@@ -1,98 +1,127 @@
-<html>
-<head>
-</head>
-<style>
-.header{
-	background-color: #ffffff;
-	height: 100px;
-	width: 100%;
-}
-.content{
-	background-color: #d6e0f5;
-	height: 100%;
-	width: 100%;
-}
 
-</style>
+<html lang="en">
+    <head>
+        <title>SMooBus</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href = "http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-<script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
-<script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+
+        <style>
+            .navbar-inverse {
+                background-color: #02558b;
+                border-color: #02558b;
+            }
+            .navbar {
+                border-radius: 0px;
+            }
+
+            .navbar-inverse .navbar-brand {
+                color: #fff;
+            }
+
+            .bluebg{
+                margin-top:15vh;
+                background-image: url(img/bluebg.png);
+                background-repeat: repeat;
+                padding-top: 15px;
+                border-radius: 5px;
+            }
+
+            .btn-sub {
+                background-color: #dc0330;
+            }
+        </style>
+
+    </head>
 
 
-<body ng-app="myApp" ng-controller="thisController">
+    <body style="background-image:url('img/smoobuss.png')"  ng-app="myApp" ng-controller="myController">
 
-<button ng-click="loginGoogle()" alt="Login">Click Me</button>
-<p>User Name : {{myName}}</p>
-<p>Provider : {{myProvider}}</p>
-<br/>
-<div ng-show="loginStatus">
-	<table border="1" style="width:70%">
-	<tr>
-		<td>Travel Date</td>
-		<td>Start Time</td>
-		<td>Origin</td>
-		<td>End Time</td>
-		<td>Destination</td>
-	</tr>
-	</table>
-</div>
-<script>
-	
-	var myApp = angular.module("myApp", ["firebase"]);
-	myApp.controller('thisController', ['$scope', '$firebase', 
-    
-	function($scope, $firebase) {
-    $scope.newuser = {};
-    
-	// Here is where you update your Firebase URL. 
-	var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
-	$scope.loginGoogle = function(){
-		ref.authWithOAuthRedirect("google", function (error, authData){
-			window.alert(authData.uid);
-			if(error){
-				
-				console.log("Login Failed", error);
-			}else{
-				$scope.myName = authData.uid;
-				console.log("Login successful with payload", authData);
-			}
-		});
-	};
-	
-	
-	
-	ref.onAuth(authenticationCallBack);
-		
-	function authenticationCallBack(authData){
-		if (authData.uid !== null) {
-			$scope.myName = authData.uid;
-			$scope.myProvider = authData.provider;
-		}
-	}
-	
-	
-	
-    
-    	
-	//$scope.users = $firebase(ref.child("feedback")).$asArray(); 
-    //$scope.edit = false;
-    //$scope.error = false;
-    //$scope.incomplete = false;  
-    
-    $scope.currentUser = null;
-    
-	//Check to see if the users is already logged in to Firebase and update currentUser if yes. 
-    /*var authData = ref.getAuth();
-	  if (authData && authData!={}) {
-		  $scope.currentUser = $firebase(ref.child("user").child(authData.uid)).$asObject();
-	  } else {
-		  console.log("User is logged out");
-	  }
-	*/
-	
-	}]);
-</script>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="#">SmooBus</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
 
-</body>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="row">
+                <div class='col-md-offset-6 col-md-6 bluebg' style='min-height:160px'>
+
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <h3 style="font-family: 'Hoefler Text'">Login With Your SmooBus Account </h3>
+                        </div>
+                        <div class="col-md-12" style='margin-top:15px'>
+                            
+                                
+                               
+                            <button ng-click="loginGoogle()" class="form-control btn btn-danger btn-sub">Google Login</button>
+                               
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+		<script>
+			var myApp = angular.module("myApp", ["firebase"]);
+			myApp.controller('myController', ['$scope', '$firebase', 
+			
+			function($scope, $firebase) {
+			$scope.newuser = {};
+			$scope.loginStatus = false;
+			
+			//User details - Require login
+			$scope.myId = "";
+			$scope.myName = "";
+			$scope.myProvider = "";
+			$scope.myToken = "";
+			$scope.myEntries = [];
+			
+			// Here is where you update your Firebase URL. 
+			var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
+			
+			$scope.loginGoogle = function(){
+				ref.authWithOAuthPopup("google", function (error, authData){
+					if(error){						
+						console.log("Login Failed", error);
+					}else{
+						//authData is in JSON format.
+						$scope.myId = authData.google.id;
+						$scope.myName = authData.google.displayName;
+						$scope.myProvider = authData.provider;
+						$scope.myToken = authData.google.accessToken;
+						
+						//Set DIV to visible once login successful
+						$scope.loginStatus = true;
+						
+						
+						$window.location.href = 'home.html';
+						console.log("Login successful with payload", authData);						
+					}
+				});
+			};
+			
+			
+			}]);
+		</script>
+    </body>
 </html>
