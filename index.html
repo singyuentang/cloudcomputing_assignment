@@ -83,9 +83,9 @@
 
 		<script>
 			var myApp = angular.module("myApps", ["firebase"]);
-			myApp.controller('myControllers', ['$scope', '$firebase', 
+			myApp.controller('myControllers', ['$rootScope', '$scope', '$firebase', 
 			
-			function($scope, $firebase) {
+			function($rootScope, $scope, $firebase) {
 			$scope.newuser = {};
 			$scope.loginStatus = false;
 			
@@ -105,6 +105,7 @@
 						console.log("Login Failed", error);
 					}else{
 						//authData is in JSON format.
+						
 						$rootScope.myId = authData.google.id;
 						$rootScope.myName = authData.google.displayName;
 						$scope.myProvider = authData.provider;
@@ -119,7 +120,24 @@
 				});
 			};
 			
-			
+			//Declare the Handler to handle async google login.
+			/*
+			ref.onAuth(authenticationCallBack);
+			function authenticationCallBack(authData){
+				if (authData.uid !== null) {
+				
+					alert($rootScope.myId);
+					//authData is in JSON format.
+					$scope.myProvider = authData.provider;
+					$scope.myToken = authData.google.accessToken;
+				
+						
+					//Set DIV to visible once login successful
+					$scope.loginStatus = true;
+					window.location.href = "home.html";
+				}
+			}
+			*/
 		
 			
 			}]);
