@@ -63,7 +63,7 @@
                     
                     <h2 style="font-family: 'Hoefler Text';text-align: center">Record Your School Journey</h2>
 					<h1 style="text-align: center">{{ myName}}</h1>
-
+					
                     <div class='row' style="padding:15px">
 
 
@@ -92,7 +92,8 @@
                                 </div>
                                 <br>
                                 <button ng-click="submitEntry()" class=" form-control btn btn-danger btn-sub">Record Entry</button>
-
+								<br/>
+								<button ng-click="logout()">Logout</button>
 
                             </form>
 
@@ -130,7 +131,7 @@
 			function($rootScope, $scope, $firebase) {
 			
 			if ($rootScope.myId == null) {
-				window.location.href = "index.html";				
+				//window.location.href = "index.html";				
 			}
 			
 			$scope.newuser = {};
@@ -166,6 +167,13 @@
 			},	function(error){
 				console.log("Failed " + error.code);
 			});
+			
+			//Logout
+			$scope.logout = function(){
+				ref.unauth();
+				$rootScope.myId = null;
+				window.location.href = "index.html";
+			}
 			
 			
 			
