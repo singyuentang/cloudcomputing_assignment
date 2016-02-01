@@ -118,13 +118,14 @@
 						</div>
                         
                     </div>
-
+					<center><a href="http://ngjh1991.github.io/is429-as1-kathy-alex/">Team 8</a>&nbsp;&nbsp;&nbsp;<a href="http://jolvanassignment1.s3-website-ap-southeast-1.amazonaws.com/">Team 10</a> </center>
+       
                 </div>
-
+				
             </div>
-
-        </div>
+			 </div>
 	<script>
+	
 		var myApp = angular.module("myApp", ["firebase"]);
 			myApp.controller('myController', ['$scope', '$firebase', 
 			
@@ -169,7 +170,9 @@
 			});
 			
 			//Logout
+			
 			$scope.logout = function(){
+			
 				ref.unauth();
 				$sessionStorage = null;
 				window.location.href = "index.html";
