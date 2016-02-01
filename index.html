@@ -83,41 +83,40 @@
 
 		<script>
 			var myApp = angular.module("myApps", ["firebase"]);
-			myApp.controller('myControllers', ['$rootScope', '$scope', '$firebase', 
+			myApp.controller('myControllers', ['$scope', '$firebase', 
 			
-			function($rootScope, $scope, $firebase) {
+			function($scope, $firebase) {
 			$scope.newuser = {};
 			$scope.loginStatus = false;
 			
 			//User details - Require login
-			//$rootScope.myId = "";
-			//$rootScope.myName = "";
-			$scope.myProvider = "";
-			$scope.myToken = "";
-			$scope.myEntries = [];
+			$scope.account = {"myId": "", "myName": "", "myProvider": "", "myToken": ""};
 			
 			// Here is where you update your Firebase URL. 
 			var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
 			
 			$scope.loginGoogle = function(){
+				
 				ref.authWithOAuthPopup("google", function (error, authData){
 					if(error){						
 						console.log("Login Failed", error);
 					}else{
 						//authData is in JSON format.
 						
-						$rootScope.myId = authData.google.id;
-						$rootScope.myName = authData.google.displayName;
-						$scope.myProvider = authData.provider;
-						$scope.myToken = authData.google.accessToken;
+						$scope.account.myId = authData.google.id;
+						$scope.account.myName = authData.google.displayName;
+						$scope.account.myProvider = authData.provider;
+						$scope.account.myToken = authData.google.accessToken;
 						
 						//Set DIV to visible once login successful
 						$scope.loginStatus = true;
 						console.log("Login successful with payload", authData);			
+						sessionStorage.user = JSON.stringify($scope.account);
 						window.location.href = "home.html";
 									
 					}
 				});
+				
 			};
 			
 			//Declare the Handler to handle async google login.
