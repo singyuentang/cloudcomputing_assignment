@@ -171,7 +171,7 @@
 			//Logout
 			$scope.logout = function(){
 				ref.unauth();
-				$sessionStorage.user = null;
+				$sessionStorage = null;
 				window.location.href = "index.html";
 			}
 			
