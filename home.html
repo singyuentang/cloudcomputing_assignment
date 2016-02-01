@@ -62,7 +62,7 @@
                 <div class='col-md-12 bluebg' style='min-height:260px'>
                     
                     <h2 style="font-family: 'Hoefler Text';text-align: center">Record Your School Journey</h2>
-					<h1 style="text-align: center">{{ myName}}</h1>
+					<h1 style="text-align: center">{{ account.myName}}</h1>
 					
                     <div class='row' style="padding:15px">
 
@@ -126,12 +126,14 @@
         </div>
 	<script>
 		var myApp = angular.module("myApp", ["firebase"]);
-			myApp.controller('myController', ['$rootScope', '$scope', '$firebase', 
+			myApp.controller('myController', ['$scope', '$firebase', 
 			
-			function($rootScope, $scope, $firebase) {
+			function($scope, $firebase) {
 			
-			if ($rootScope.myId == null) {
-				//window.location.href = "index.html";				
+			$scope.account = JSON.parse(sessionStorage.user);
+			
+			if ($scope.account.myId == "") {
+				window.location.href = "index.html";				
 			}
 			
 			$scope.newuser = {};
@@ -143,13 +145,13 @@
 			var ref = new Firebase("https://cloud-assignment.firebaseio.com/");
 					
 			$scope.submitEntry = function(){
-				var userRef = ref.child($rootScope.myId);
+				var userRef = ref.child($scope.account.myId);
 				userRef.push({date: $scope.entry.date, time: $scope.entry.time, origin: $scope.entry.origin, destination: $scope.entry.destination});
 			
 			}
 			
 			//Retrieve all related data
-			var ref_retrieveById = new Firebase("https://cloud-assignment.firebaseio.com/" + $rootScope.myId);
+			var ref_retrieveById = new Firebase("https://cloud-assignment.firebaseio.com/" + $scope.account.myId);
 			
 			
 			ref_retrieveById.on("value", function(snapshot){
@@ -169,7 +171,7 @@
 			//Logout
 			$scope.logout = function(){
 				ref.unauth();
-				$rootScope.myId = null;
+				$sessionStorage.user = null;
 				window.location.href = "index.html";
 			}
 			
